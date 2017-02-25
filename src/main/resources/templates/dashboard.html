@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+
+	<title>KooruSpace</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="font-awesome/css/font-awesome.css" rel="stylesheet"></link>
+
+<link href="css/animate.css" rel="stylesheet"></link>
+<link href="css/style.css" rel="stylesheet"></link>
+
+</head>
+
+<body>
+	<div id="wrapper">
+		<!-- navbar_side  -->
+		<nav class="navbar-default navbar-static-side" role="navigation"
+			th:replace="fragments/navbar_left"></nav>
+
+		<div id="page-wrapper" class="gray-bg">
+
+			<!-- navbar_top  -->
+			<div class="row border-bottom" th:replace="fragments/navbar_top"></div>
+			<div class="wrapper wrapper-content">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="ibox float-e-margins">
+							<div class="circle_sixty pull-right"></div>
+
+							<div class="ibox-title">
+
+								<span class="label label-success pull-right">Current</span>
+
+								<h5>Current User</h5>
+							</div>
+							<div class="ibox-content">
+
+								<h1 class="no-margins" id="realtime_user">0</h1>
+
+								<div class="stat-percent font-bold text-success">
+									<i class="fa fa-bolt"></i>
+								</div>
+								<small>Total income</small>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-lg-3">
+						<div class="ibox float-e-margins">
+							<div class="circle_threehundred pull-right"></div>
+							<div class="ibox-title">
+								<span class="label label-info pull-right">Market</span>
+								<h5>Current User Ratio</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="flot-chart-pie-content" id="flot-pie-chart-market"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="ibox float-e-margins">
+							<div class="circle_threehundred pull-right"></div>
+							<div class="ibox-title">
+								<span class="label label-primary pull-right">Country</span>
+								<h5>Current User Ratio</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="flot-chart-pie-content" id="flot-pie-chart-country"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="ibox float-e-margins">
+							<div class="circle_threehundred pull-right"></div>
+							<div class="ibox-title">
+								<span class="label label-danger pull-right">Verison</span>
+								<h5>Current User Ratio</h5>
+							</div>
+							<div class="ibox-content">
+								<div class="flot-chart-pie-content" id="flot-pie-chart-version"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox float-e-margins">
+							<div class="circle_sixty pull-right"></div>
+							<div class="ibox-title">
+
+								<h5>Orders</h5>
+								<div class="pull-right">
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs btn-white active" id="dayago_button">1Day</button>
+										<button type="button" class="btn btn-xs btn-white" id="weekago_button">1Week</button>
+										<button type="button" class="btn btn-xs btn-white" id="monthago_button">4Week</button>
+									</div>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<div class="row">
+									<div class="col-lg-9">
+										<div class="flot-chart">
+											<div class="flot-chart-content" id="flot-dashboard-chart"></div>
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<ul class="stat-list">
+											<li>
+												<h2 class="no-margins" id="maximum_user">0</h2> <small>Maximum Current User</small>
+												<div class="stat-percent" id="maximum_user_stat-percent">
+													<i class="fa fa-level-up text-navy"></i>
+												</div>
+												<div class="progress progress-mini">
+													<div style="width: 0%;" class="progress-bar" id="maximum_user_progress"></div>
+												</div>
+											</li>
+											<li>
+												<h2 class="no-margins" id="average_user">0</h2> <small>Average Current User</small>
+												<div class="stat-percent" id="average_user_stat-percent">
+													0% <i class="fa fa-level-down text-navy"></i>
+												</div>
+												<div class="progress progress-mini">
+													<div style="width: 0%;" class="progress-bar" id="average_user_progress"></div>
+												</div>
+											</li>
+											<li>
+												<h2 class="no-margins" id="minimum_user">0</h2> <small>Minimum Current User</small>
+												<div class="stat-percent" id="minimum_user_stat-percent">
+													<i class="fa fa-bolt text-navy"></i>
+												</div>
+												<div class="progress progress-mini">
+													<div style="width: 0%;" class="progress-bar" id="minimum_user_progress"></div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<div class="input-group-btn sessionPartFirst">
+					<button class="btn btn-lg btn-primary pull-right sessionButton">Session List</button>
+				</div>
+
+
+				<div class="ibox float-e-margins sessionPart" style="display: none">
+
+					<div class="ibox-content">
+						<div class="input-group-btn sessionPart" style="display: none">
+							<button class="btn btn-lg btn-primary pull-right sessionButton">
+								<i class="fa fa-refresh" aria-hidden="true"></i>
+							</button>
+						</div>
+						<table class="table table-striped table-bordered table-hover sessionButtonDiv" style="display: none" id="dataTables">
+							<thead>
+								<tr>
+									<th>Player ID</th>
+									<th>Device IP</th>
+									<th>market</th>
+									<th>version</th>
+									<th>device</th>
+									<th>country</th>
+									<th>seq</th>
+									<th>authType</th>
+									<th>login</th>
+									<th>logout</th>
+									<th>length</th>
+								</tr>
+							</thead>
+							</div>
+							</div>
+
+
+
+							</div>
+
+
+
+
+							<div class="footer" th:replace="fragments/footer"></div>
+							</div>
+							<div id="right-sidebar" th:replace="fragments/sidebar_right"></div>
+							</div>
+
+							<style>
+.dataTables_length {
+	display: none;
+}
+
+.tdtooltip {
+	position: relative;
+}
+
+.tdtooltip .tooltiptext {
+	visibility: hidden;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 10px 15px 10px 15px;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+}
+
+.tdtooltip:hover .tooltiptext {
+	visibility: visible;
+}
+
+table #dataTables thead>tr>th {
+	padding-right: 0px !important;
+}
+</style>
+
+
+							<!-- Mainly scripts -->
+							<script src="js/jquery-2.1.1.js"></script>
+							<script src="js/bootstrap.min.js"></script>
+							<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+							<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+							<!-- Flot -->
+							<script src="js/plugins/flot/jquery.flot.js"></script>
+							<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+							<script src="js/plugins/flot/jquery.flot.spline.js"></script>
+							<script src="js/plugins/flot/jquery.flot.resize.js"></script>
+							<script src="js/plugins/flot/jquery.flot.pie.js"></script>
+							<script src="js/plugins/flot/jquery.flot.symbol.js"></script>
+							<script src="js/plugins/flot/jquery.flot.time.js"></script>
+
+							<!-- Custom and plugin javascript -->
+							<script src="js/inspinia.js"></script>
+							<script src="js/plugins/pace/pace.min.js"></script>
+
+							<!-- jQuery UI -->
+							<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+							<script src="js/plugins/dataTables/datatables.min.js"></script>
+							<script src="js/custom/common.js"></script>
+							<script src="js/circle-progress.js"></script>
+
+							<script th:inline="javascript">
+		$(document).ready(function() {
+				
+					var dashboard = new Dashboard();
+					var search = new Search();
+					var lineDatasetNow = null;
+					var lineDatasetDay = null;
+					var lineDatasetWeek = null;
+					var lineDataset1;
+					var lineDataset2;
+					var lineDataset3;
+					var countPie = 5;
+					
+					// ajax callback을 위한 함
+					var getLineGraphData = function(callback,day) {
+				        $.getJSON("/dashboard/activesessionnumlist/"+day, function(data) {
+				            if( typeof callback === "function" ) {
+				                callback( data );
+				            }
+				            });
+				    };
+					var getPieGraphData = function(callback) {
+				        $.getJSON("/dashboard/activesessiondatalist", function(data) {
+				            if( typeof callback === "function" ) {
+				                callback( data );
+				            }
+				            });
+				    };
+					
+				    
+					function setLineGraph(){
+						getLineGraphData(function(data) {
+							lineDatasetNow = dashboard.MkLineData("Now",dashboard.MkArrActiveSessionNumVOList(data,0),"#089276",3);
+							mkLineGraph(lineDatasetNow,lineDatasetDay,lineDatasetWeek);
+						},0);
+						getLineGraphData(function(data) {
+							lineDatasetDay = dashboard.MkLineData("DayAgo",dashboard.MkArrActiveSessionNumVOList(data,1),"#d3d3d3",1);
+							mkLineGraph(lineDatasetNow,lineDatasetDay,lineDatasetWeek);
+						},1);
+						getLineGraphData(function(data) {
+							lineDatasetWeek = dashboard.MkLineData("WeekAgo",dashboard.MkArrActiveSessionNumVOList(data,7),"#d3d3d3",1);
+							mkLineGraph(lineDatasetNow,lineDatasetDay,lineDatasetWeek);
+						},7); 
+					};
+					
+					function mkLineGraph(data1,data2,data3){
+						if(data1 == null || data2 == null || data3 == null) return;// 3개의 데이터가 다 로드 되었을때 작
+		
+						lineDataset1 = [lineDatasetDay,lineDatasetNow];
+						lineDataset2 = [lineDatasetWeek,lineDatasetNow];
+						
+						// default set
+						var mmar = dashboard.MkMMAR(lineDatasetNow);
+	
+						$('#minimum_user').text(mmar[0]);
+						$('#maximum_user').text(mmar[1]);
+						$('#average_user').text(mmar[2]);
+						$('#realtime_user').text(mmar[3]); 
+						$( "#dayago_button" ).trigger( "click" );
+
+					};
+					
+					
+					function setPieGraph(){
+						getPieGraphData(function(data) {
+							$.plot($("#flot-pie-chart-market"), dashboard.MkActiveSessionData(JSON.parse(data.market)),pieOptions);
+							$.plot($("#flot-pie-chart-country"), dashboard.MkActiveSessionData(JSON.parse(data.country)), pieOptions);
+
+							var versionPieData =  dashboard.MkActiveSessionData(JSON.parse(data.version));
+							
+							$.plot($("#flot-pie-chart-version"),versionPieData, pieOptions);
+							$('#flot-pie-chart-market').bind("plotclick", function(event,pos,obj) {
+								 versionPieData =  dashboard.MkActiveSessionVersionData( obj.series.label,JSON.parse(data.marketVersion));
+								 $.plot($("#flot-pie-chart-version"),versionPieData, pieOptions);
+							 }); 
+							 $('#flot-pie-chart-country').bind("plotclick", function(event,pos,obj) {
+								 versionPieData =  dashboard.MkActiveSessionVersionData( obj.series.label,JSON.parse(data.countryVersion));
+								 $.plot($("#flot-pie-chart-version"),versionPieData, pieOptions);
+							 });
+							 $('#flot-pie-chart-version').bind("plotclick", function(event,pos,obj) {
+								 versionPieData =   dashboard.MkActiveSessionData(JSON.parse(data.version));
+								 $.plot($("#flot-pie-chart-version"),versionPieData, pieOptions);
+							 });
+						});
+					}
+							// Line graph option
+							var lineOptions = {
+								xaxis : {
+									mode : "time",
+									axisLabel : "time",
+									axisLabelUseCanvas : true,
+									axisLabelFontSizePixels : 12,
+									axisLabelFontFamily : 'Arial',
+									axisLabelPadding : 10,
+								},
+								yaxis : {
+									position : "left",
+									min : 0,									
+									color : "#d5d5d5",
+									axisLabelUseCanvas : true,
+									axisLabelFontSizePixels : 12,
+									axisLabelFontFamily : 'Arial',
+									axisLabelPadding : 3
+								},
+								legend : {
+									noColumns : 1,
+									labelBoxBorderColor : "#000000",
+									position : "nw"
+								},
+								grid : {
+									hoverable : true,
+									borderWidth : 0
+								},
+								tooltip: { 
+				                        show: true
+				                    },
+				                tooltipOpts: {
+				                        content: "| %s |시간 : %x|접속자 수 : %y명|",
+				                        shifts: {
+				                            x: -30,
+				                            y: -50
+				                        },
+				                        defaultTheme: false
+				                }
+							};
+
+						// Pie graph option
+						var pieOptions =  {
+							    series: {
+							        pie: {
+							            show: true
+							        }
+							    },
+							    grid: {
+							        hoverable: true,
+							        clickable:true
+
+							    },
+							    tooltip: true,
+							    tooltipOpts: {
+							      	content: function(label,x,y){
+							    	    return " %p.0% ("+y+"명) <br> " + label;
+							    	},  
+							     shifts: {
+							            x: 20,
+							            y: -10
+							        },
+							        defaultTheme: false
+							    },
+							    legend: {
+							        position:  "se"
+							    }
+							}
+						 
+						 
+						    var table;
+						   	var waitData = false;
+							var showSession = true;
+							$('.sessionButton').bind("click",function() {  
+
+								$(".sessionButtonDiv").show();
+								$(".sessionPart").show();
+								$(".sessionPartFirst").hide();
+								showSession = false;
+								
+								if(waitData != true){
+					        		waitData = true;
+					        		
+									if(table != null) {
+						    			table.clear();
+						        		$( "td" ).unbind("click");
+						        		table.destroy();
+						        	}
+						    		$.getJSON("/dashboard/sessiondata", function(data) {
+						    			var tr="";
+										$('#realtime_user').text(data.length); 
+										$(data).each(
+												function(key, val) {
+													  tr = $('<tr/>');
+											            tr.append("<td>"+search.PlayerIdChk(val.playerId)+"</td>");
+ 											            tr.append("<td>"+search.IpAddressChk(val.deviceIpAddress)+"</td>");
+ 											            tr.append("<td>" + search.MarketChk(val.market) + "</td>");
+											            tr.append("<td>" + search.VersionChk(val.versionString) + "</td>");
+											            tr.append("<td data-val='"+ val.deviceSerial+"' class='tdtooltip' data-container='body'>" + val.deviceName + "<div class='tooltiptext'>  deviceSerial : "+val.deviceSerial+"</div></td>");											            
+											            tr.append("<td>" + search.CountryCodeChk(val.deviceGeolocationString) + "</td>");
+											            tr.append("<td data-val='"+ val.sessionId+"' class='tdtooltip' data-container='body'>" + search.SessionChk(val.sessionSeq) + "<div class='tooltiptext'>  sessionId : "+val.sessionId+"</div></td>");											            
+											            tr.append("<td data-val='"+ val.authId+"' class='tdtooltip' data-container='body'>" + val.authType + "<div class='tooltiptext'>  authId : "+val.authId+"</div></td>");											            
+											            tr.append("<td>" + search.LoginTimeChk(val.loginTime)+ "</td>");
+											            tr.append("<td>" + search.LogoutTimeChk(val.logoutTime) + "</td>");
+														var length = search.LengthChk(val.loginTime,val.logoutTime,val.pingTime);
+											            tr.append("<td class='tdtooltip' data-container='body'>"+ length + "<div class='tooltiptext'>"+ secondToTime(length) + "</td>");
+											            $('#dataTables').append(tr);
+														});
+								
+										table =  $('#dataTables').DataTable({
+							                 dom: '<"html5buttons"B>lTfgitp',
+							                 "iDisplayLength": 25,
+							                 paging: true,
+							                 buttons: [
+							                     {extend: 'copy'},
+							                     {extend: 'csv'},
+							                     {extend: 'excel', title: 'SessionFile'},
+							                     {extend: 'pdf', title: 'SessionFile'},
+							                     {extend: 'print',
+							                      customize: function (win){
+							                             $(win.document.body).addClass('white-bg');
+							                             $(win.document.body).css('font-size', '10px');
+
+							                             $(win.document.body).find('table')
+							                                     .addClass('compact')
+							                                     .css('font-size', 'inherit');
+							                     }
+							                     }
+							                 ]
+
+							             });
+							    	     
+										     
+											$( "td" ).bind("click",function(){ 
+										       var val = $(this).data('val');
+												if(val != undefined){
+												 window.prompt("Copy to clipboard: Ctrl+C, Enter", val);
+												}
+											});
+
+											 waitData = false;
+									});
+								}
+						  });
+							
+							$(window).scroll(function(){			
+								if  ($(window).scrollTop() >= $(document).height() - $(window).height()){
+									if(showSession == true ){
+										$('.sessionButton').trigger("click"); 
+										showSession = false;
+									}
+								}
+							});
+					        
+							
+							
+							$('#dayago_button').click(
+									function() {
+										
+										var mmar1 = dashboard.MkMMAR(lineDatasetNow);
+										var mmar2 = dashboard.MkMMAR(lineDatasetDay);
+
+
+										$('#minimum_user_stat-percent').text(mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_stat-percent').text(mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_stat-percent').text(mkPercentage(mmar1[2],mmar2[2]));
+										$('#minimum_user_progress').css("width",mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_progress').css("width",mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_progress').css("width",mkPercentage(mmar1[2],mmar2[2]));
+									
+										$.plot($("#flot-dashboard-chart"),lineDataset1,lineOptions);
+										$('#dayago_button').addClass("active");
+										$('#weekago_button').removeClass("active");
+										$('#monthago_button').removeClass("active");
+
+							});
+							
+							$('#weekago_button').click(
+									function() {
+										var mmar1 = dashboard.MkMMAR(lineDatasetNow);
+										var mmar2 = dashboard.MkMMAR(lineDatasetWeek);
+								
+										$('#minimum_user_stat-percent').text(mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_stat-percent').text(mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_stat-percent').text(mkPercentage(mmar1[2],mmar2[2]));
+
+										$('#minimum_user_progress').css("width",mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_progress').css("width",mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_progress').css("width",mkPercentage(mmar1[2],mmar2[2]));
+									
+										$.plot($("#flot-dashboard-chart"),lineDataset2,lineOptions);
+										$('#dayago_button').removeClass("active");
+										$('#weekago_button').addClass("active");
+										$('#monthago_button').removeClass("active");							
+								});
+							
+							$('#monthago_button').click(
+									function() {
+										var mmar1 = dashboard.MkMMAR(lineDatasetNow);
+										var mmar2 = dashboard.MkMMAR(lineDatasetWeek);
+								
+										$('#minimum_user_stat-percent').text(mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_stat-percent').text(mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_stat-percent').text(mkPercentage(mmar1[2],mmar2[2]));
+
+										$('#minimum_user_progress').css("width",mkPercentage(mmar1[0],mmar2[0]));
+										$('#maximum_user_progress').css("width",mkPercentage(mmar1[1],mmar2[1]));
+										$('#average_user_progress').css("width",mkPercentage(mmar1[2],mmar2[2]));
+									
+										$.plot($("#flot-dashboard-chart"),lineDataset2,lineOptions);
+										$('#dayago_button').removeClass("active");
+										$('#weekago_button').removeClass("active");
+										$('#monthago_button').addClass("active");		
+							});
+						
+							$('.label-success').click(
+									function() {
+											$('.sessionButton').trigger("click"); 
+							});
+							setLineGraph();
+							setPieGraph();
+							dashboard.Circle_sixty();
+							dashboard.Circle_threehundred();
+
+							setInterval(function() {
+								countPie--;							
+									lineDatasetNow = null;
+									lineDatasetDay = null;
+									lineDatasetWeek = null;
+									lineDataset1 = null;
+									lineDataset2 = null;
+									lineDataset3 = null;				
+									setLineGraph();
+									dashboard.Circle_sixty();
+								
+								if(countPie == 0){
+									setPieGraph();
+									countPie = 5;
+									dashboard.Circle_threehundred();
+								}
+
+							}, 60000); 
+
+			});
+		
+		
+	</script></body>
+</html>
