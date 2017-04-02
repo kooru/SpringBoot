@@ -3,6 +3,7 @@ package space.kooru.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.Map;
 

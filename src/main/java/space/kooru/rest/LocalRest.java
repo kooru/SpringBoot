@@ -19,8 +19,10 @@ public class LocalRest
     }
     @RequestMapping("/local/test")
     public String localTest() throws Exception{
-        return localService.getTestData();
+//        return localService.getTestData();
+        return "string";
     }
+
 
 }
 

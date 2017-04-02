@@ -17,7 +17,7 @@ public class LocalService {
         return localDao.getCurrentDateTime();
     }
 
-    public String getTestData() throws Exception{
-        return localDao.getTestData();
-    }
+//    public String getTestData() throws Exception{
+//        return localDao.getTestData();
+//    }
 }
